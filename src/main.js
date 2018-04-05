@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import App from './App.vue'
 
-import localization from "./localization/localization";
-import {factionData, factions, modes} from "./scripts/data"
+import {localization, dateLocalization} from "./localization/localization"
+import {factionData, factions, leaders, modes} from "./scripts/data"
 
 Vue.config.productionTip = false;
 window.Vue = Vue;
@@ -15,14 +15,16 @@ const sharedPlugin = {
             factions: factions,
             modes: modes,
             factionLeaders: factionData,
+            leaders: leaders
         }
     }
 };
 
 // localization
 const i18n = new VueI18n({
-    locale: 'en',
+    locale: 'en-US',
     messages: localization,
+    dateTimeFormats: dateLocalization
 });
 
 //Vue.use(VueI18n);

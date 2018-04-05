@@ -7,12 +7,13 @@
         name: "LeaderButton",
         props: {
             title: String,
+            id: Number,
             mode: Number,
 
         },
         methods: {
             changeLeader: function (event) {
-                this.$emit('leader-changed', {leader: this.title, mode: this.mode})
+                this.$emit('leader-changed', {leader: this.id, mode: this.mode})
             }
         }
     }

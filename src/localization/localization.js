@@ -2,7 +2,7 @@ import {leaders, factions} from '../scripts/data'
 import Utils from '../scripts/utils'
 
 const localization = {
-    'en': {
+    'en-US': {
         leaders: {
             [Utils.localization(leaders.FOLTEST)]: "King Foltest",
             [Utils.localization(leaders.RADOVID)]: "King Radovid V",
@@ -30,15 +30,30 @@ const localization = {
             [Utils.localization(leaders.HARALD)]: "Harald the Cripple",
             [Utils.localization(leaders.EIST)]: "Eist Tuirseach"
         },
-        "factions": {
+        factions: {
             [Utils.localization(factions.NR)]: "Northern Realms",
             [Utils.localization(factions.NG)]: "Nilfgaard",
             [Utils.localization(factions.ST)]: "Scoia'tael",
             [Utils.localization(factions.MO)]: "Monsters",
             [Utils.localization(factions.SK)]: "Skellige"
+        },
+        plot: {
+            brackets: {
+                first: "1th bracket",
+                second: "2nd bracket",
+                third: "3rd bracket",
+                fourth: "4th bracket"
+            },
+            winrate: 'Winrate (%)',
+            popularity: 'Popularity (%)'
+        },
+        page: {
+            global_title: "Leaders winrate/popularity",
+            local_title: "Match-ups between leaders",
+            efficiency_title: "Leaders efficiency"
         }
     },
-    'ru': {
+    'ru-RU': {
         leaders: {
             [Utils.localization(leaders.FOLTEST)]: "Король Фольтест",
             [Utils.localization(leaders.RADOVID)]: "Король Радовид V",
@@ -66,14 +81,42 @@ const localization = {
             [Utils.localization(leaders.HARALD)]: "Харальд Хромой",
             [Utils.localization(leaders.EIST)]: "Эйст Тиршах"
         },
-        "factions": {
+        factions: {
             [Utils.localization(factions.NR)]: "Королевства Севера",
             [Utils.localization(factions.NG)]: "Нильфгаард",
             [Utils.localization(factions.ST)]: "Скоя'таэли",
             [Utils.localization(factions.MO)]: "Чудовища",
             [Utils.localization(factions.SK)]: "Скеллиге"
+        },
+        plot: {
+            brackets: {
+                first: "Группа #1",
+                second: "Группа #2",
+                third: "Группа #3",
+                fourth: "Группа #4"
+            },
+            winrate: 'Винрейт (%)',
+            popularity: 'Популярность (%)'
+        },
+        page: {
+            global_title: "Лидеры: винрейт/популярность",
+            local_title: "Матчи между лидерами",
+            efficiency_title: "Эффективность лидеров"
         }
     }
 };
 
-export default localization
+const dateLocalization = {
+    'en-US': {
+        short: {
+            year: 'numeric', month: 'numeric', day: 'numeric'
+        }
+    },
+    'ru-RU': {
+        short: {
+            year: 'numeric', month: 'numeric', day: 'numeric'
+        }
+    }
+};
+
+export {localization, dateLocalization}
