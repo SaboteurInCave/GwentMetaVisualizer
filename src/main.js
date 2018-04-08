@@ -3,19 +3,20 @@ import VueI18n from 'vue-i18n'
 import App from './App.vue'
 
 import {localization, dateLocalization} from "./localization/localization"
-import {factionData, factions, leaders, modes} from "./scripts/data"
+import {factionData, factions, leaders, modes, brackets} from "./scripts/data"
 
 Vue.config.productionTip = false;
 window.Vue = Vue;
 
 // shared data
 const sharedPlugin = {
-    install: function (Vue, options) {
+    install: function (Vue) {
         Vue.prototype.sharedData = {
             factions: factions,
             modes: modes,
             factionLeaders: factionData,
-            leaders: leaders
+            leaders: leaders,
+            brackets: brackets
         }
     }
 };

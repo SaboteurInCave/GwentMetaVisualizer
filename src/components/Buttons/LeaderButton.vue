@@ -13,7 +13,7 @@
         },
         methods: {
             changeLeader: function (event) {
-                this.$emit('leader-changed', {leader: this.id, mode: this.mode})
+                this.$parent.$emit('leader-changed', {leader: this.id, mode: this.mode})
             }
         }
     }

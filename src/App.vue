@@ -10,24 +10,13 @@
         </div>
 
         <h1 class="text-center">{{ $t('page.global_title') }}</h1>
-        <div class="row-buttons">
-            <template v-for="faction in sharedData.factions">
-                <FactionButton :title="$t(getFactionLocalization(faction))"
-                                :faction=faction
-                                :mode=sharedData.modes.global
-                                v-on:faction-changed="changeFaction">
-                </FactionButton>
-            </template>
-        </div>
-        <div class="row-buttons">
-            <template v-for="leader in faction_list[sharedData.modes.global]">
-                <LeaderButton :title="$t(getLeaderLocalization(leader))"
-                              :mode=sharedData.modes.global
-                              :id=leader
+        <FactionLeaderSelector :mode=sharedData.modes.global
+                               :factions=sharedData.factions
+                               :leaders=faction_list[sharedData.modes.global]
+                               v-on:faction-changed="changeFaction"
                                v-on:leader-changed="changeLeader">
-                </LeaderButton>
-            </template>
-        </div>
+        </FactionLeaderSelector>
+
         <h2 class="text-center">{{ $t(getLeaderLocalization(leader_id[sharedData.modes.global])) }}</h2>
         <div v-if="json_data.length > 0">
             <GlobalChart :winrate=json_data[sharedData.modes.global][leader_id[sharedData.modes.global]].winrate
@@ -36,6 +25,34 @@
                          :language=localization.language>
             </GlobalChart>
         </div>
+
+        <hr>
+
+        <h1 class="text-center">{{ $t('page.local_title') }}</h1>
+        <FactionLeaderSelector :mode=sharedData.modes.local
+                               :factions=sharedData.factions
+                               :leaders=faction_list[sharedData.modes.local]
+                               v-on:faction-changed="changeFaction"
+                               v-on:leader-changed="changeLeader">
+        </FactionLeaderSelector>
+
+        <BracketSelector :mode=sharedData.modes.local
+                         :brackets=brackets
+                         v-on:bracket-changed="changeBracket">
+
+        </BracketSelector>
+
+        <div>
+            <h2 class="text-center">{{ $t(getLeaderLocalization(leader_id[sharedData.modes.local])) + ' - ' +  getBracketLabel(state[sharedData.modes.local].bracket) }}</h2>
+            <div v-if="json_data.length > 0">
+                <LocalChart :data=json_data[sharedData.modes.local][leader_id[sharedData.modes.local]]
+                            :bracket=state[sharedData.modes.local].bracket
+                            :meta=meta_data
+                            :language=localization.language
+                ></LocalChart>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -43,17 +60,19 @@
 import Utils from './scripts/utils'
 import axios from 'axios'
 
-import FactionButton from './components/FactionButton.vue'
-import LeaderButton from './components/LeaderButton.vue'
-import LanguageSwitcherButton from './components/LanguageSwitcherButton.vue'
+import LanguageSwitcherButton from './components/Buttons/LanguageSwitcherButton.vue'
+import FactionLeaderSelector from './components/Selectors/FactionLeaderSelector.vue'
+import BracketSelector from "./components/Selectors/BracketSelector";
 
 export default {
     name: 'app',
     components: {
-        FactionButton,
-        LeaderButton,
         LanguageSwitcherButton,
-        'GlobalChart': () => import('./components/GlobalChart.vue')
+        FactionLeaderSelector,
+        BracketSelector,
+        // load chart components only we need it because a they contain a massive amount of data
+        'GlobalChart': () => import('./components/Charts/GlobalChart.vue'),
+        'LocalChart': () => import('./components/Charts/LocalChart.vue'),
     },
     data: function() {
         return {
@@ -72,6 +91,12 @@ export default {
                 [this.sharedData.modes.local]: this.sharedData.factionLeaders[this.sharedData.factions.NR],
                 [this.sharedData.modes.efficiency]: this.sharedData.factionLeaders[this.sharedData.factions.NR]
             },
+            state: {
+                [this.sharedData.modes.local]: {
+                    bracket: this.sharedData.brackets.FOURTH
+                }
+            },
+            brackets: this.getBrackets(),
             json_data: [],
             meta_data: {},
             localization: {
@@ -82,14 +107,20 @@ export default {
         }
     },
     methods: {
-        getFactionLocalization: function (faction) {
-            return 'factions.' + Utils.localization(faction);
+        getLeaderLocalization(leader) {
+            return Utils.getLeaderLocalization(leader);
         },
-        getLeaderLocalization: function (leader) {
-            return 'leaders.' + Utils.localization(leader);
+        getBracketLabel(bracket) {
+            return Utils.getBracketLabel(this.$t, bracket);
+        },
+        getBrackets() {
+            return [this.sharedData.brackets.FIRST, this.sharedData.brackets.SECOND, this.sharedData.brackets.THIRD, this.sharedData.brackets.FOURTH];
         },
         changeLeader: function (data) {
             this.leader_id[data.mode] = data['leader'];
+
+            if (data.mode === this.sharedData.modes.local)
+                this.state[data.mode].bracket = this.sharedData.brackets.FOURTH;
         },
         changeFaction: function (data) {
             this.faction_mode[data.mode] = data.faction;
@@ -98,6 +129,9 @@ export default {
         changeLanguage: function (data) {
             this.$i18n.locale = data.code;
             this.localization.language = data.code;
+        },
+        changeBracket(data) {
+            this.state[data.mode].bracket = data.bracket;
         },
         populateLeaderList: function (mode) {
             this.faction_list[mode] = this.sharedData.factionLeaders[this.faction_mode[mode]];
@@ -132,6 +166,17 @@ export default {
         text-align: center;
     }
 
+
+    .parallel-divs {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .row-buttons {
         width: 30%;
         display: flex;
@@ -145,16 +190,5 @@ export default {
         align-items: center;
         margin: 25px auto 50px auto;
     }
-    .parallel-divs {
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-
 
 </style>

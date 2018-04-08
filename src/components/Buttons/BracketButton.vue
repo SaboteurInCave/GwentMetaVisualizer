@@ -12,7 +12,7 @@
         },
         methods: {
             changeBracket: function (event) {
-                this.$emit('bracket-changed', {bracket: this.id, mode: this.mode});
+                this.$parent.$emit('bracket-changed', {bracket: this.id, mode: this.mode});
             }
         }
     }

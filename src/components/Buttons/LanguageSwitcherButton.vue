@@ -39,7 +39,7 @@
         width: 64px;
         height: 64px;
 
-        background: url('../assets/flags.png') no-repeat;
+        background: url('../../assets/flags.png') no-repeat;
     }
 
     .flag.flag-us {

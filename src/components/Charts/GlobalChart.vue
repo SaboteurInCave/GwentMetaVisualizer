@@ -10,8 +10,9 @@
 </template>
 
 <script>
-    import Utils from "../scripts/utils";
-    import Chart from 'chart.js'
+    import Utils from "../../scripts/utils";
+    import Chart from '../../../node_modules/chart.js/src/chart'
+    import '../../../node_modules/chartjs-plugin-deferred'
 
     export default {
         name: "GlobalChart",
@@ -28,7 +29,7 @@
             }
         },
         methods: {
-            initPlot: function () {
+            initPlot() {
                 let labels = Utils.getBracketLabels(this.$t);
 
                 let data = [{
@@ -52,11 +53,16 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        title: {text: item.title, display: true, fontSize: 16}
+                        title: {text: item.title, display: true, fontSize: 16},
+                        plugins: {
+                            deferred: {
+                                yOffset: "50%",
+                            }
+                        }
                     }
                 })));
             },
-            prepareDataset: function (data, metaData) {
+            prepareDataset(data, metaData) {
                 let dataset = [];
 
                 let colors = Utils.getColorPallete(data.length).map(function (index) {
@@ -65,7 +71,7 @@
 
                 data.forEach((item, index) => dataset.push({
                     data: item,
-                    label: this.$d(new Date(metaData.time[index].start), 'short', this.language) + ' - ' + this.$d(new Date(metaData.time[index].end), 'short', this.language),
+                    label: Utils.getTimeRangeLocalization(this.$d, metaData.time[index].start, metaData.time[index].end, this.language),
                     fill: false,
                     backgroundColor: colors[index],
                     borderColor: colors[index],

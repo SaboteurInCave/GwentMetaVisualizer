@@ -12,7 +12,7 @@
         },
         methods: {
             changeFaction: function (event) {
-                this.$emit('faction-changed', {faction: this.faction, mode: this.mode});
+                this.$parent.$emit('faction-changed', {faction: this.faction, mode: this.mode});
             }
         }
     }

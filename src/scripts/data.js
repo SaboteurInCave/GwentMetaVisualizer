@@ -51,4 +51,11 @@ const factionData = {
     [factions.SK]: [leaders.BRAN, leaders.CRACH, leaders.HARALD, leaders.EIST]
 };
 
-export {factions, leaders, factionData, modes}
+const brackets = new Enumeration({
+    FIRST: 0,
+    SECOND: 1,
+    THIRD: 2,
+    FOURTH: 3,
+});
+
+export {factions, leaders, factionData, modes, brackets}
