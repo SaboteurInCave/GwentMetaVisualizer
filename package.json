@@ -19,8 +19,7 @@
     "@vue/cli-plugin-eslint": "^3.0.0-beta.6",
     "@vue/cli-service": "^3.0.0-beta.6",
     "vue-template-compiler": "^2.5.13",
-    "compression-webpack-plugin": "^1.1.11",
-    "webpack-bundle-analyzer": "^2.11.1"
+    "compression-webpack-plugin": "^1.1.11"
   },
   "babel": {
     "presets": [
