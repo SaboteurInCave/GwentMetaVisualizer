@@ -36,12 +36,6 @@
                                v-on:leader-changed="changeLeader">
         </FactionLeaderSelector>
 
-        <BracketSelector :mode=sharedData.modes.local
-                         :brackets=brackets
-                         v-on:bracket-changed="changeBracket">
-
-        </BracketSelector>
-
         <div>
             <h2 class="text-center">{{ $t(getLeaderLocalization(leader_id[sharedData.modes.local])) + ' - ' +  getBracketLabel(state[sharedData.modes.local].bracket) }}</h2>
             <div v-if="json_data.length > 0">
@@ -52,6 +46,12 @@
                 ></LocalChart>
             </div>
         </div>
+
+        <BracketSelector :mode=sharedData.modes.local
+                         :brackets=brackets
+                         v-on:bracket-changed="changeBracket">
+
+        </BracketSelector>
 
     </div>
 </template>
@@ -152,6 +152,12 @@ export default {
                 time: response.data.time_ranges,
                 ranges: response.data.mmr_ranges
             };
+
+            this.meta_data.ranges.forEach((item, index) => {
+               while (item.length < 4) {
+                   item.unshift({Min: null, Max: null});
+               }
+            });
         })
         .catch(e => {
             console.log(e);

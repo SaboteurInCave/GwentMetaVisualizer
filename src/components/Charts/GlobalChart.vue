@@ -11,8 +11,9 @@
 
 <script>
     import Utils from "../../scripts/utils";
-    import Chart from '../../../node_modules/chart.js/src/chart'
-    import '../../../node_modules/chartjs-plugin-deferred'
+
+    import Chart from 'chart.js'
+    import 'chartjs-plugin-deferred'
 
     export default {
         name: "GlobalChart",

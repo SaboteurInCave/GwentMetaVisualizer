@@ -7,9 +7,10 @@
 </template>
 
 <script>
+
     import Utils from "../../scripts/utils";
-    import Chart from '../../../node_modules/chart.js/src/chart'
-    import '../../../node_modules/chartjs-plugin-deferred'
+    import Chart from 'chart.js'
+    import 'chartjs-plugin-deferred'
 
 
     export default {
@@ -58,16 +59,20 @@
                     return '#' + index;
                 });
 
-                data.forEach((item, index) => (
-                    dataset.push({
-                        data: item[bracketId].data,
-                        label: Utils.getTimeMetaRangeLocalization(this.$d, {
-                            start: metaData.time[index].start,
-                            end: metaData.time[index].end
-                        }, metaData.ranges[index][bracketId], this.language),
-                        backgroundColor: colors[index]
-                    })
-                ));
+                data.forEach((item, index) => {
+                    //console.log(index, item[bracketId].data, metaData.ranges[index][bracketId]);
+                    let nullSize = item[bracketId].data.filter((item) => item == null).length;
+                    if (nullSize !== item[bracketId].data.length) {
+                        dataset.push({
+                            data: item[bracketId].data,
+                            label: Utils.getTimeMetaRangeLocalization(this.$d, {
+                                start: metaData.time[index].start,
+                                end: metaData.time[index].end
+                            }, metaData.ranges[index][bracketId] ? metaData.ranges[index][bracketId] : {}, this.language),
+                            backgroundColor: colors[index]
+                        })
+                    }
+                });
 
                 return dataset;
             },
